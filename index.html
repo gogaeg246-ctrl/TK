@@ -41,15 +41,17 @@ button.dng{color:#d6455d}
 .chip{border-radius:999px;font-size:13px;padding:5px 13px}
 .chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 #q{flex:1 1 100%;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 12px}
-.card{background:var(--card);border-radius:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto;overflow:hidden}
-.info{padding:16px 18px}
+.card{background:var(--card);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.top{display:flex}
+.poster{width:108px;min-height:140px;flex:none;object-fit:cover;background:var(--bg)}
+.info{flex:1;min-width:0;padding:16px 18px}
 .info h3{margin:0;font-size:17px;letter-spacing:-.01em}
 .meta{color:var(--mute);font-size:13px;margin-top:2px}
 .memo{margin-top:10px;font-size:14px}
 .ca{margin-top:10px;display:flex;gap:6px}.ca button{font-size:12px;padding:3px 10px}
-.stub{position:relative;border-left:2px dashed var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:160px}
+.stub{flex:none;position:relative;border-left:2px dashed var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:160px}
 .stub::before,.stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--bg)}
-.stub::before{top:-9px}.stub::after{bottom:-9px}
+.stub::before{top:-9px}.stub::after{display:none}
 .bd span:first-child{display:block;font-size:11px;color:var(--mute);margin-bottom:2px}
 .b{display:inline-block;border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid transparent}
 button.b{border-color:var(--c)}
@@ -73,13 +75,18 @@ button.stat.on{outline:2px solid var(--ink)}
 .go{display:block;margin-top:6px;text-align:center;background:#fee500;color:#191600;font-weight:700;font-size:13px;border-radius:8px;padding:6px 10px;text-decoration:none}
 .go.alt{background:var(--ink);color:var(--bg)}
 .toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:13px;z-index:9;max-width:calc(100vw - 32px)}
+.act{position:relative;border-top:2px dashed var(--line);padding:12px 18px;display:flex;gap:8px;flex-wrap:wrap}
+.act::before,.act::after{content:"";position:absolute;top:-9px;width:16px;height:16px;border-radius:50%;background:var(--bg)}
+.act::before{left:-9px}.act::after{right:-9px}
+.act .go{flex:1 1 140px;margin:0;padding:10px 14px;font-size:14px}
+.pv{display:block;width:96px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}
 [hidden]{display:none!important}
 @media(max-width:560px){
 header{flex-wrap:wrap}.clock{text-align:left;width:100%}.clock b{font-size:17px;display:inline}
 .stats{grid-template-columns:repeat(2,1fr)}
-.card{grid-template-columns:1fr}
-.stub{border-left:0;border-top:2px dashed var(--line);flex-direction:row;flex-wrap:wrap;gap:16px}
-.stub::before,.stub::after{top:-9px;bottom:auto}.stub::before{left:-9px}.stub::after{left:auto;right:-9px}}
+.top{flex-wrap:wrap}.poster{width:92px;min-height:124px}
+.stub{flex:1 1 100%;border-left:0;border-top:2px dashed var(--line);flex-direction:row;flex-wrap:wrap;gap:16px}
+.stub::before,.stub::after{top:-9px;bottom:auto}.stub::before{left:-9px}.stub::after{display:block;left:auto;right:-9px}}
 </style>
 </head>
 <body>
@@ -127,6 +134,10 @@ header{flex-wrap:wrap}.clock{text-align:left;width:100%}.clock b{font-size:17px;
  <label>선예매 상태<select id="sp" class="sel"></select></label>
  <label>일반예매 상태<select id="sg" class="sel"></select></label>
  <label>한줄 안내 메모 (선택)<input id="sm"></label>
+ <label>포스터 사진 올리기 (선택)<input id="sf" type="file" accept="image/*"></label>
+ <label>또는 이미지 주소 / 저장소 파일 이름<input id="sposter" placeholder="https://… 또는 posters/a.jpg"></label>
+ <img id="spv" class="pv" alt="" hidden>
+ <div class="dr" style="margin-top:8px"><button type="button" id="spx">포스터 지우기</button></div>
  <div class="dr"><button data-close>취소</button><button class="pri" id="showOk">적용</button></div>
 </dialog>
 
@@ -151,32 +162,15 @@ header{flex-wrap:wrap}.clock{text-align:left;width:100%}.clock b{font-size:17px;
 {
  "title": "대리티켓팅 진행 현황",
  "tagline": "",
- "logo": "logo.png",
+ "logo": "",
  "notice": "접수 전 접수 양식을 꼭 먼저 작성해 주세요.",
- "kakao": "https://open.kakao.com/o/sr3xMKCi",
- "twitter": "https://x.com/Ticket_waveV",
+ "kakao": "",
+ "twitter": "",
  "form": "",
  "shows": [
-  {
-   "id": "a1",
-   "name": "예시 공연 A",
-   "venue": "예매처 이름",
-   "date": "12/20(토) 18:00",
-   "pre": "open",
-   "gen": "wait",
-   "memo": "선예매 접수 중이에요."
-  },
-  {
-   "id": "a2",
-   "name": "예시 공연 B",
-   "venue": "",
-   "date": "12/27(토) 14:00",
-   "pre": "closed",
-   "gen": "standby",
-   "memo": ""
-  }
- ],
- "updated": "2026-11-25T09:16:56.737Z"
+  {"id":"a1","name":"예시 공연 A","venue":"예매처 이름","date":"12/20(토) 18:00","pre":"open","gen":"wait","memo":"선예매 접수 중이에요."},
+  {"id":"a2","name":"예시 공연 B","venue":"","date":"12/27(토) 14:00","pre":"closed","gen":"standby","memo":""}
+ ]
 }
 </script>
 <script>
@@ -185,7 +179,7 @@ const ORDER=Object.keys(ST), MAIN=ORDER.slice(0,4), LS='tsAdmin';
 const F=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safe=u=>/^https?:\/\//.test(u||'')?u:'';
-const safeImg=u=>/^(https?:\/\/|\w[\w.\/-]*$)/.test(u||'');
+const safeImg=u=>/^(https?:\/\/|data:image\/|\w[\w.\/-]*$)/.test(u||'');
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const RE_BLOCK=new RegExp('(<'+'script id="data"[^>]*>)[\\s\\S]*?(<\\/'+'script>)');
 const RE_JSON=new RegExp('<'+'script id="data"[^>]*>([\\s\\S]*?)<\\/'+'script>');
@@ -222,9 +216,14 @@ function list(){
  const t=q.trim().toLowerCase();
  const a=D.shows.filter(s=>has(s,filter)&&(!t||(s.name+' '+(s.venue||'')).toLowerCase().includes(t)));
  const to=safe(D.kakao)||safe(D.form);
- const go=(s,f,l)=>to&&(s[f]==='open'||s[f]==='standby')?`<a class="go${s[f]==='standby'?' alt':''}" href="${esc(to)}" target="_blank" rel="noopener" data-copy="${esc('['+(s[f]==='open'?'접수':'공석 신청')+'] '+s.name+(s.date?' / '+s.date:'')+' / '+l)}">${s[f]==='open'?'접수하기':'공석 신청'}</a>`:'';
- const bd=(s,f,l)=>admin?`<div class="bd"><span>${l}</span><button class="b ${s[f]}" data-id="${s.id}" data-sf="${f}" title="눌러서 상태 변경">${ST[s[f]]}</button></div>`:`<div class="bd"><span>${l}</span><span class="b ${s[f]}">${ST[s[f]]}</span>${go(s,f,l)}</div>`;
- F('list').innerHTML=a.length?a.map(s=>`<article class="card"><div class="info"><h3>${esc(s.name)}</h3><div class="meta">${[s.venue,s.date].filter(Boolean).map(esc).join(' | ')}</div>${s.memo?`<div class="memo">${esc(s.memo)}</div>`:''}${admin?`<div class="ca"><button data-edit="${s.id}">수정</button><button class="dng" data-del="${s.id}">삭제</button></div>`:''}</div><div class="stub">${bd(s,'pre','선예매')}${bd(s,'gen','일반예매')}</div></article>`).join(''):'<div class="empty"><b>조건에 맞는 공연이 없어요</b><br>다른 필터를 선택하거나 검색어를 지워 보세요.</div>';
+ const fl=[['pre','선예매'],['gen','일반예매']];
+ const act=s=>{if(admin||!to)return'';
+  const o=fl.filter(x=>s[x[0]]==='open').map(x=>x[1]),w=fl.filter(x=>s[x[0]]==='standby').map(x=>x[1]);
+  const b=(alt,btn,tag,ks)=>`<a class="go${alt}" href="${esc(to)}" target="_blank" rel="noopener" data-copy="${esc('['+tag+'] '+s.name+(s.date?' / '+s.date:'')+' / '+ks.join('·'))}">${btn}</a>`;
+  const h=(o.length?b('',(o.length<2?o[0]+' ':'')+'접수하기','접수',o):'')+(w.length?b(' alt',(w.length<2?w[0]+' ':'')+'공석 신청','공석 신청',w):'');
+  return h?`<div class="act">${h}</div>`:'';};
+ const bd=(s,f,l)=>admin?`<div class="bd"><span>${l}</span><button class="b ${s[f]}" data-id="${s.id}" data-sf="${f}" title="눌러서 상태 변경">${ST[s[f]]}</button></div>`:`<div class="bd"><span>${l}</span><span class="b ${s[f]}">${ST[s[f]]}</span></div>`;
+ F('list').innerHTML=a.length?a.map(s=>`<article class="card"><div class="top">${safeImg(s.poster)?`<img class="poster" src="${esc(s.poster)}" alt="${esc(s.name)} 포스터" loading="lazy">`:''}<div class="info"><h3>${esc(s.name)}</h3><div class="meta">${[s.venue,s.date].filter(Boolean).map(esc).join(' | ')}</div>${s.memo?`<div class="memo">${esc(s.memo)}</div>`:''}${admin?`<div class="ca"><button data-edit="${s.id}">수정</button><button class="dng" data-del="${s.id}">삭제</button></div>`:''}</div><div class="stub">${bd(s,'pre','선예매')}${bd(s,'gen','일반예매')}</div></div>${act(s)}</article>`).join(''):'<div class="empty"><b>조건에 맞는 공연이 없어요</b><br>다른 필터를 선택하거나 검색어를 지워 보세요.</div>';
 }
 const mark=()=>{dirty=true;render();};
 
@@ -260,15 +259,26 @@ F('loginOk').onclick=()=>{const c={owner:F('lo').value.trim(),repo:F('lr').value
 F('loginTest').onclick=()=>{F('loginD').close();render();};
 
 document.querySelectorAll('.sel').forEach(s=>s.innerHTML=ORDER.map(k=>`<option value="${k}">${ST[k]}</option>`).join(''));
+let pend=null;
+const pv=u=>{const i=F('spv');if(safeImg(u)){i.src=u;i.hidden=false;}else i.hidden=true;};
+function shrink(f){return new Promise((ok,no)=>{const im=new Image(),u=URL.createObjectURL(f);
+ im.onload=()=>{const k=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement('canvas');
+  c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');
+  x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.82));};
+ im.onerror=no;im.src=u;});}
+F('sf').onchange=e=>{const f=e.target.files[0];if(!f)return;
+ shrink(f).then(u=>{pend=u;F('sposter').value='';pv(u);}).catch(()=>alert('이미지를 읽지 못했어요. 다른 파일로 시도해 주세요.'));};
+F('sposter').oninput=e=>{pend=null;pv(e.target.value.trim());};
+F('spx').onclick=()=>{pend=null;F('sposter').value='';F('sf').value='';pv('');};
 function openShow(id){
  editId=id;const s=D.shows.find(x=>x.id===id)||{pre:'none',gen:'none'};
  F('showT').textContent=id?'공연 수정':'공연 추가';
- F('sn').value=s.name||'';F('sv').value=s.venue||'';F('sd').value=s.date||'';F('sp').value=s.pre;F('sg').value=s.gen;F('sm').value=s.memo||'';
+ F('sn').value=s.name||'';F('sv').value=s.venue||'';F('sd').value=s.date||'';F('sp').value=s.pre;F('sg').value=s.gen;F('sm').value=s.memo||'';pend=(s.poster||'').startsWith('data:')?s.poster:null;F('sposter').value=pend?'':(s.poster||'');F('sf').value='';pv(s.poster);
  F('showD').showModal();
 }
 F('showOk').onclick=()=>{
  const n=F('sn').value.trim();if(!n){F('sn').focus();return;}
- const o={name:n,venue:F('sv').value.trim(),date:F('sd').value.trim(),pre:F('sp').value,gen:F('sg').value,memo:F('sm').value.trim()};
+ const o={name:n,venue:F('sv').value.trim(),date:F('sd').value.trim(),pre:F('sp').value,gen:F('sg').value,memo:F('sm').value.trim(),poster:pend||F('sposter').value.trim()};
  if(editId)Object.assign(D.shows.find(x=>x.id===editId),o);else D.shows.unshift({id:uid(),...o});
  F('showD').close();mark();
 };
@@ -285,6 +295,11 @@ async function save(){
  const h={Authorization:'Bearer '+c.token,Accept:'application/vnd.github+json'};
  const btn=F('bar').querySelector('[data-act=save]');btn.disabled=true;btn.textContent='저장 중...';
  try{
+  for(const s of D.shows){if((s.poster||'').startsWith('data:')){
+   const path='posters/'+s.id+'-'+Date.now().toString(36)+'.jpg';
+   const up=await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/${path}`,{method:'PUT',headers:h,body:JSON.stringify({message:'포스터 추가',content:s.poster.split(',')[1]})});
+   if(!up.ok)throw new Error('포스터 업로드에 실패했어요 ('+up.status+'). 키의 Contents 쓰기 권한을 확인해 주세요.');
+   s.poster=path;}}
   const r=await fetch(api,{headers:h});
   if(!r.ok)throw new Error('index.html을 불러오지 못했어요 ('+r.status+'). 아이디·저장소·키 권한을 확인해 주세요.');
   const f=await r.json();
