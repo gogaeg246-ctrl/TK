@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>대리티켓팅 진행 현황</title>
+<meta name="description" content="대리티켓팅 접수 진행 현황을 실시간으로 확인하세요.">
+<meta name="theme-color" content="#3d3df5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎫%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#e9ecf5;--card:#fff;--ink:#161a33;--mute:#6a6f8a;--line:#d5d9e8;--ac:#3d3df5;--open:#12865a;--wait:#b26b00;--standby:#1d6fd1;--closed:#7d8199;--none:#a3a7bb;color-scheme:light dark}
 @media(prefers-color-scheme:dark){:root{--bg:#0f1120;--card:#191c33;--ink:#eceefb;--mute:#9a9fbd;--line:#2c3050;--ac:#8c8cff;--open:#43d39a;--wait:#f0b04d;--standby:#6cb0ff;--closed:#9498b3;--none:#6a6e88}}
@@ -80,6 +83,8 @@ button.stat.on{outline:2px solid var(--ink)}
 .act::before{left:-9px}.act::after{right:-9px}
 .act .go{flex:1 1 140px;margin:0;padding:10px 14px;font-size:14px}
 .pv{display:block;width:96px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}
+.ago{font-size:12px;color:var(--mute);margin-top:6px}
+.card.fin .top{opacity:.55}
 [hidden]{display:none!important}
 @media(max-width:560px){
 header{flex-wrap:wrap}.clock{text-align:left;width:100%}.clock b{font-size:17px;display:inline}
@@ -101,7 +106,8 @@ header{flex-wrap:wrap}.clock{text-align:left;width:100%}.clock b{font-size:17px;
  <button class="pri" data-act="save">깃허브에 저장</button>
  <button data-act="add">공연 추가</button>
  <button data-act="links">링크·공지</button>
- <button data-act="key">키 설정</button>
+ <button data-act="key">깃허브 키 설정</button>
+ <button data-act="dl">index.html 다운로드</button>
  <button data-act="reset">초기화</button>
  <button data-act="exit">나가기</button>
  <button class="dng" data-act="logout">로그아웃</button>
@@ -112,17 +118,17 @@ header{flex-wrap:wrap}.clock{text-align:left;width:100%}.clock b{font-size:17px;
 <section class="stats" id="stats"></section>
 <div class="tools" id="tools"></div>
 <main id="list"></main>
-<footer><p id="foot">실시간 진행 현황판 · 문의는 카카오톡 또는 트위터(X)를 이용해 주세요.</p>
+<footer><p id="foot">실시간 진행 현황판 · 문의는 카카오톡 또는 트위터(X)를 이용해 주세요.</p></footer>
 </div>
 
 <div class="toast" id="toast" hidden></div>
 <dialog id="loginD">
  <h2>관리자 키 로그인</h2>
- <p> Token을 입력하면 저장 시 같은 주소의 고객 화면에 반영돼요. 키는 이 기기의 브라우저에만 저장돼요.</p>
- <label>아이디<input id="lo" autocomplete="off"></label>
+ <p>GitHub Personal Access Token을 입력하면 저장 시 같은 주소의 고객 화면에 반영돼요. 키는 이 기기의 브라우저에만 저장돼요.</p>
+ <label>깃허브 아이디<input id="lo" autocomplete="off"></label>
  <label>저장소 이름<input id="lr" autocomplete="off"></label>
- <label>관리자 키 <input id="lt" type="password" autocomplete="off"></label>
- <div class="dr"><button class="pri" id="loginOk">관리자 키로 로그인</button></div>
+ <label>관리자 키 (GitHub Token)<input id="lt" type="password" autocomplete="off"></label>
+ <div class="dr"><button id="loginTest">키 없이 미리보기</button><button class="pri" id="loginOk">관리자 키로 로그인</button></div>
 </dialog>
 
 <dialog id="showD">
@@ -161,42 +167,15 @@ header{flex-wrap:wrap}.clock{text-align:left;width:100%}.clock b{font-size:17px;
 {
  "title": "대리티켓팅 진행 현황",
  "tagline": "",
- "logo": "logo.png",
+ "logo": "",
  "notice": "접수 전 접수 양식을 꼭 먼저 작성해 주세요.",
- "kakao": "https://open.kakao.com/o/sr3xMKCi",
- "twitter": "https://x.com/Ticket_waveV",
- "form": "https://docs.google.com/forms/d/e/1FAIpQLSf9NRmtRY7wCcHrlifckAjGVaDWtMWPmVRdqO2hHNqZwnR9YA/viewform?usp=publish-editor",
+ "kakao": "",
+ "twitter": "",
+ "form": "",
  "shows": [
-  {
-   "id": "mwvx2jiq269",
-   "name": "TERT",
-   "venue": "TEST",
-   "date": "12/20(토) 18:00",
-   "pre": "open",
-   "gen": "open",
-   "memo": "선예매 접수 중이에요.",
-   "poster": "posters/mwvx2jiq269-mwvx2tay.jpg"
-  },
-  {
-   "id": "a1",
-   "name": "예시 공연 A",
-   "venue": "예매처 이름",
-   "date": "12/20(토) 18:00",
-   "pre": "standby",
-   "gen": "standby",
-   "memo": "선예매 접수 중이에요."
-  },
-  {
-   "id": "a2",
-   "name": "예시 공연 B",
-   "venue": "",
-   "date": "12/27(토) 14:00",
-   "pre": "standby",
-   "gen": "standby",
-   "memo": ""
-  }
- ],
- "updated": "2026-11-26T10:29:51.313Z"
+  {"id":"a1","name":"예시 공연 A","venue":"예매처 이름","date":"12/20(토) 18:00","pre":"open","gen":"wait","memo":"선예매 접수 중이에요."},
+  {"id":"a2","name":"예시 공연 B","venue":"","date":"12/27(토) 14:00","pre":"closed","gen":"standby","memo":""}
+ ]
 }
 </script>
 <script>
@@ -241,22 +220,25 @@ function render(){
 function list(){
  const t=q.trim().toLowerCase();
  const a=D.shows.filter(s=>has(s,filter)&&(!t||(s.name+' '+(s.venue||'')).toLowerCase().includes(t)));
+ if(!admin)a.sort((x,y)=>Math.min(ORDER.indexOf(x.pre),ORDER.indexOf(x.gen))-Math.min(ORDER.indexOf(y.pre),ORDER.indexOf(y.gen)));
  const to=safe(D.kakao)||safe(D.form);
  const fl=[['pre','선예매'],['gen','일반예매']];
+ const fin=s=>!['open','wait','standby'].some(k=>s.pre===k||s.gen===k);
+ const ago=t=>{const m=Math.floor((Date.now()-t)/6e4);return m<1?'방금 변경':m<60?m+'분 전 변경':m<1440?Math.floor(m/60)+'시간 전 변경':Math.floor(m/1440)+'일 전 변경';};
  const act=s=>{if(admin||!to)return'';
   const o=fl.filter(x=>s[x[0]]==='open').map(x=>x[1]),w=fl.filter(x=>s[x[0]]==='standby').map(x=>x[1]);
   const b=(alt,btn,tag,ks)=>`<a class="go${alt}" href="${esc(to)}" target="_blank" rel="noopener" data-copy="${esc('['+tag+'] '+s.name+(s.date?' / '+s.date:'')+' / '+ks.join('·'))}">${btn}</a>`;
   const h=(o.length?b('',(o.length<2?o[0]+' ':'')+'접수하기','접수',o):'')+(w.length?b(' alt',(w.length<2?w[0]+' ':'')+'공석 신청','공석 신청',w):'');
   return h?`<div class="act">${h}</div>`:'';};
  const bd=(s,f,l)=>admin?`<div class="bd"><span>${l}</span><button class="b ${s[f]}" data-id="${s.id}" data-sf="${f}" title="눌러서 상태 변경">${ST[s[f]]}</button></div>`:`<div class="bd"><span>${l}</span><span class="b ${s[f]}">${ST[s[f]]}</span></div>`;
- F('list').innerHTML=a.length?a.map(s=>`<article class="card"><div class="top">${safeImg(s.poster)?`<img class="poster" src="${esc(s.poster)}" alt="${esc(s.name)} 포스터" loading="lazy">`:''}<div class="info"><h3>${esc(s.name)}</h3><div class="meta">${[s.venue,s.date].filter(Boolean).map(esc).join(' | ')}</div>${s.memo?`<div class="memo">${esc(s.memo)}</div>`:''}${admin?`<div class="ca"><button data-edit="${s.id}">수정</button><button class="dng" data-del="${s.id}">삭제</button></div>`:''}</div><div class="stub">${bd(s,'pre','선예매')}${bd(s,'gen','일반예매')}</div></div>${act(s)}</article>`).join(''):'<div class="empty"><b>조건에 맞는 공연이 없어요</b><br>다른 필터를 선택하거나 검색어를 지워 보세요.</div>';
+ F('list').innerHTML=a.length?a.map(s=>`<article class="card${!admin&&fin(s)?' fin':''}"><div class="top">${safeImg(s.poster)?`<img class="poster" src="${esc(s.poster)}" alt="${esc(s.name)} 포스터" loading="lazy">`:''}<div class="info"><h3>${esc(s.name)}</h3><div class="meta">${[s.venue,s.date].filter(Boolean).map(esc).join(' | ')}</div>${s.at?`<div class="ago">${ago(s.at)}</div>`:''}${s.memo?`<div class="memo">${esc(s.memo)}</div>`:''}${admin?`<div class="ca"><button data-edit="${s.id}">수정</button><button class="dng" data-del="${s.id}">삭제</button></div>`:''}</div><div class="stub">${bd(s,'pre','선예매')}${bd(s,'gen','일반예매')}</div></div>${act(s)}</article>`).join(''):'<div class="empty"><b>조건에 맞는 공연이 없어요</b><br>다른 필터를 선택하거나 검색어를 지워 보세요.</div>';
 }
 const mark=()=>{dirty=true;render();};
 
 document.addEventListener('click',e=>{
  const t=e.target.closest('button');if(!t)return;
  if(t.dataset.f){filter=(filter===t.dataset.f&&filter!=='all')?'all':t.dataset.f;render();}
- else if(t.dataset.sf){const s=D.shows.find(x=>x.id===t.dataset.id);s[t.dataset.sf]=ORDER[(ORDER.indexOf(s[t.dataset.sf])+1)%ORDER.length];mark();}
+ else if(t.dataset.sf){const s=D.shows.find(x=>x.id===t.dataset.id);s[t.dataset.sf]=ORDER[(ORDER.indexOf(s[t.dataset.sf])+1)%ORDER.length];s.at=Date.now();mark();}
  else if(t.dataset.edit)openShow(t.dataset.edit);
  else if(t.dataset.del){delId=t.dataset.del;F('delD').showModal();}
  else if(t.dataset.close!==undefined)t.closest('dialog').close();
@@ -304,7 +286,7 @@ function openShow(id){
 }
 F('showOk').onclick=()=>{
  const n=F('sn').value.trim();if(!n){F('sn').focus();return;}
- const o={name:n,venue:F('sv').value.trim(),date:F('sd').value.trim(),pre:F('sp').value,gen:F('sg').value,memo:F('sm').value.trim(),poster:pend||F('sposter').value.trim()};
+ const o={name:n,venue:F('sv').value.trim(),date:F('sd').value.trim(),pre:F('sp').value,gen:F('sg').value,memo:F('sm').value.trim(),poster:pend||F('sposter').value.trim(),at:Date.now()};
  if(editId)Object.assign(D.shows.find(x=>x.id===editId),o);else D.shows.unshift({id:uid(),...o});
  F('showD').close();mark();
 };
@@ -315,6 +297,7 @@ const inject=src=>(D.updated=new Date().toISOString(),src).replace(RE_BLOCK,(m,a
 const fromB64=b=>new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\n/g,'')),c=>c.charCodeAt(0)));
 const toB64=s=>{let r='';new TextEncoder().encode(s).forEach(b=>r+=String.fromCharCode(b));return btoa(r);};
 
+const why=c=>c===401?'키가 잘못됐거나 만료됐어요. 새 키를 발급해 다시 로그인해 주세요.':c===403?'키에 이 저장소의 Contents 쓰기 권한이 없어요. 키 권한을 확인해 주세요.':c===404?'저장소나 index.html을 찾지 못했어요. 아이디, 저장소 이름, 파일 위치(맨 위)를 확인해 주세요.':c===409||c===422?'다른 곳에서 먼저 저장된 것 같아요. 새로고침 후 다시 시도해 주세요.':'잠시 후 다시 시도해 주세요.';
 async function save(){
  const c=cfg();if(!c)return;
  const api=`https://api.github.com/repos/${c.owner}/${c.repo}/contents/index.html`;
@@ -324,13 +307,13 @@ async function save(){
   for(const s of D.shows){if((s.poster||'').startsWith('data:')){
    const path='posters/'+s.id+'-'+Date.now().toString(36)+'.jpg';
    const up=await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/${path}`,{method:'PUT',headers:h,body:JSON.stringify({message:'포스터 추가',content:s.poster.split(',')[1]})});
-   if(!up.ok)throw new Error('포스터 업로드에 실패했어요 ('+up.status+'). 키의 Contents 쓰기 권한을 확인해 주세요.');
+   if(!up.ok)throw new Error('포스터 업로드 실패: '+why(up.status));
    s.poster=path;}}
   const r=await fetch(api,{headers:h});
-  if(!r.ok)throw new Error('index.html을 불러오지 못했어요 ('+r.status+'). 아이디·저장소·키 권한을 확인해 주세요.');
+  if(!r.ok)throw new Error(why(r.status));
   const f=await r.json();
   const p=await fetch(api,{method:'PUT',headers:h,body:JSON.stringify({message:'현황 업데이트',content:toB64(inject(fromB64(f.content))),sha:f.sha})});
-  if(!p.ok)throw new Error('저장하지 못했어요 ('+p.status+'). 키에 Contents 쓰기 권한이 있는지 확인해 주세요.');
+  if(!p.ok)throw new Error(why(p.status));
   dirty=false;render();alert('저장했어요. 고객 화면에는 1~2분 안에 반영돼요.');
  }catch(e){alert(e.message);}
  btn.disabled=false;btn.textContent='깃허브에 저장';
@@ -350,7 +333,7 @@ F('refresh').onclick=async()=>{
 };
 const KST=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
 function tick(){const p={};KST.formatToParts(new Date()).forEach(x=>p[x.type]=x.value);F('clk').textContent=`${p.year}.${p.month}.${p.day}(${p.weekday}) ${p.hour}:${p.minute}:${p.second}`;}
-setInterval(tick,1000);tick();
+setInterval(tick,1000);tick();setInterval(()=>list(),60000);
 setInterval(async()=>{if(admin||document.hidden)return;
  try{const t=await(await fetch(location.pathname+'?t='+Date.now(),{cache:'no-store'})).text();
   const n=JSON.parse(t.match(RE_JSON)[1]);if(JSON.stringify(n)!==JSON.stringify(D)){D=n;render();}}catch(e){}},60000);
